@@ -274,6 +274,9 @@ $(document).ready(function() {
                 }
             }
         });
+         $('html, body').animate({
+            scrollTop: $("#chartContainer").offset().top
+        }, 1000);
     };
 
     function watson(arg1, arg2, arg3) {
