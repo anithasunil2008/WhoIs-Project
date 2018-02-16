@@ -170,6 +170,10 @@ body {
     text-align: center;
 }
 
+.userInput {
+    margin-left: 10px;
+}
+
 #submit:hover {
     background-color: teal;
 }
@@ -337,11 +341,16 @@ th {
     font-size: 30px;
 }
 
+#link {
+    color: coral;
+    font-size: 20px;
+}
+
 #user_name {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 30px;
     color: coral;
-    margin-top: 50px;
+    /* margin-top: 50px; */
 }
 
 .table-curved {

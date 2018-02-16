@@ -21,7 +21,7 @@ $(document).ready(function() {
             .css('transform', 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)');
     });
 
-    // Initialize Firebase -- this is a link to Eric's scratch Database
+
     var config = {
         apiKey: "AIzaSyDTbzUdtRlYpfkOZNwwWHXOg0iRmVgrEL4",
         authDomain: "who-is-scratch.firebaseapp.com",
@@ -37,10 +37,10 @@ $(document).ready(function() {
     var database = firebase.database();
 
     //initialize all modals  
-    
+
 
     $(".modal").modal();
-   
+
     //This sextion grabs all of the input from the input page.  Note that in our production version, 
     //only the NAME will come from the input page, the rest of the content will come from Watson
 
@@ -65,24 +65,24 @@ $(document).ready(function() {
         database.ref().on("child_added", function(childSnapshot) {
             var name = childSnapshot.val().Name;
             nameArray.push(name);
-            
+
         });
 
         duplicateName = nameArray.indexOf(inputName);
-        
+
 
         if (duplicateName != "-1") {
 
             // call a modal to alert to a duplicate name
-            
+
 
             $('#dupName').modal('open');
-            
+
 
         } else {
 
             var url = "https://www.reddit.com/user/" + inputName + "/comments.json";
-            
+
 
             $.getJSON(url, function(response) {
 
@@ -95,17 +95,17 @@ $(document).ready(function() {
                 // change the middle criteria to use the numComments obtainted above              
                 for (i = 0; i < numComments; i++) {
                     commentArray[i] = response.data.children[i].data.body;
-                    
+
                 }
 
                 var commentString = commentArray.toString();
-                
+
 
                 var cleanString = cleaner(commentString);
 
                 var computedStringLength = countString(cleanString);
 
-                
+
                 //check the string length to determine if we have at least 100 words to send to Watson
                 //_____________________________________________________________________________________
 
@@ -120,28 +120,24 @@ $(document).ready(function() {
                         watson(cleanString, inputName, accuracy);
                     }
                 }
-                
-                
-                
-     //function to trigger no username found Modal.
-            }, function(data, status){
-            var check = data;
-            
-          }).fail(function(error){
-            $('#noName').modal('open');
-                
-                
-                
+
+                //function to trigger no username found Modal.
+            }, function(data, status) {
+                var check = data;
+
+            }).fail(function(error) {
+                $('#noName').modal('open');
+
+
+
             });
         }
 
-        
-        
         // This clears the input form
-        
-         $("#user_name").val("");
-         return;   
-        
+
+        $("#user_name").val("");
+        return;
+
     });
 
     //whenever the database changes, pull the database contents and update the chart
@@ -196,7 +192,7 @@ $(document).ready(function() {
     $(document).on("click", ".btn", function(event) {
         event.preventDefault();
         var button_index = $(this).attr("id");
-        
+
         $("#row" + button_index).remove();
         database.ref(button_index + "/").remove();
     });
@@ -209,11 +205,11 @@ $(document).ready(function() {
     // This event handler highlights the name when clicked and also renders the chart
     $(document).on("click", "#header tr:has(td)", function(e) {
 
-        
+
         $('#warning').empty();
         $('#warning').removeClass();
         userName = $(this).attr('class');
-       
+
 
         $("#header td").removeClass("highlight");
         var clickedCell = $(e.target).closest("td");
@@ -252,7 +248,7 @@ $(document).ready(function() {
                 legend: { display: false },
                 title: {
                     display: true,
-                    text: 'Personality Profile For ' + userName, 
+                    text: 'Personality Profile For ' + userName,
                     padding: 80,
                     fontSize: 30,
                     fontColor: "black"
@@ -270,11 +266,11 @@ $(document).ready(function() {
                             fontSize: 20
                         }
                     }]
-                    
+
                 }
             }
         });
-         $('html, body').animate({
+        $('html, body').animate({
             scrollTop: $("#chartContainer").offset().top
         }, 1000);
     };
@@ -299,9 +295,9 @@ $(document).ready(function() {
                 Emotional_Range: response.personality[4].percentile.toFixed(3),
                 watson_word_count_message: response.word_count_message || null
             });
-                        
+
             window.location = "table_proto.html";
-            
+
         });
     };
 
